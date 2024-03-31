@@ -42,4 +42,27 @@ def webhook():
 def index():
     return send_from_directory('static', 'index.html')
 
+@app.route('/submit_expense', methods=['POST'])
+def submit_expense():
+    expenses = []
+
+    # Get the data from the form
+    item_names = request.form.getlist('item_name[]')
+    prices = request.form.getlist('price[]')
+    dates = request.form.getlist('date[]')
+    labels = request.form.getlist('labels[]')
+
+    # Create a list of dictionaries representing expenses
+    for item_name, price, date, label in zip(item_names, prices, dates, labels):
+        expense = {
+            'item_name': item_name,
+            'price': float(price),
+            'date': date,
+            'labels': label.split(',')  # Split labels by comma
+        }
+        expenses.append(expense)
+
+    # Return the list of expenses as JSON
+    return jsonify(expenses)
+
 
