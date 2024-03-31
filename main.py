@@ -1,11 +1,12 @@
 
 # A very simple Flask Hello World app for you to get started with...
 
-from flask import Flask, abort, request
-
 import hmac
 import hashlib
 import os
+
+import git
+from flask import Flask, abort, request
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
     # x_hub_signature and data are from the webhook payload
