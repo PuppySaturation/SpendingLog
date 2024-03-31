@@ -8,11 +8,9 @@
 </head>
 <body>
     <h2>Currently Used Labels</h2>
-    <ul>
-        {% for label in labels %}
-            <li>{{ label.name }}</li>
-        {% endfor %}
-    </ul>
+    <p>
+        {% for label in labels %}{{ label.name }},{% endfor %}
+    </p>
     <h2>Enter Expenses</h2>
     <form id="expenseForm" action="/submit_expense" method="post">
         <table id="expenseTable">
