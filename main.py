@@ -6,7 +6,7 @@ import hashlib
 import os
 
 import git
-from flask import Flask, abort, request, render_template, jsonify
+from flask import Flask, abort, request, render_template, jsonify, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from data_models import Expense, Label, ExpenseLabel, Base
 
@@ -24,8 +24,9 @@ app = Flask(__name__)
 W_SECRET = os.environ['SECRET_KEY']
 
 # will need later for simple authentication
-#username=os.environ['SITE_USERNAME']
-#password=os.environ['SITE_PASSWORD']
+USERNAME=os.environ['SITE_USERNAME']
+PASSWORD=os.environ['SITE_PASSWORD']
+app.secret_key = os.environ['SITE_SECRET']
 
 mysql_host = os.environ['MYSQL_HOST']
 mysql_user = os.environ['MYSQL_USER']
@@ -64,6 +65,8 @@ def webhook():
 
 @app.route('/')
 def index():
+    if not session.get('logged_in'):
+        return redirect('/login')
     labels = Label.query.all()
     return render_template('index.html', labels=labels)
 
@@ -93,4 +96,13 @@ def submit_expense():
 
     return jsonify({'message': 'Expenses submitted successfully'})
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == USERNAME and password == PASSWORD:
+            session['logged_in'] = True
+            return redirect('/')
 
+    return render_template('login.html')
