@@ -6,7 +6,7 @@ import hashlib
 import os
 
 import git
-from flask import Flask, abort, request, send_from_directory, jsonify
+from flask import Flask, abort, request, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from data_models import Expense, Label, ExpenseLabel, Base
 
@@ -64,7 +64,8 @@ def webhook():
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    labels = Label.query.all()
+    return render_template('index.html', labels=labels)
 
 @app.route('/submit_expense', methods=['POST'])
 def submit_expense():
