@@ -1,7 +1,7 @@
 
 # A very simple Flask Hello World app for you to get started with...
 
-from flask import Flask, abort
+from flask import Flask, abort, request
 
 import hmac
 import hashlib
