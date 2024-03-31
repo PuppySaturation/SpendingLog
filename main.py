@@ -5,6 +5,7 @@ from flask import Flask, abort
 
 import hmac
 import hashlib
+import os
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
     # x_hub_signature and data are from the webhook payload
