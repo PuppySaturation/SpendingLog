@@ -36,10 +36,13 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle' : 280}
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{mysql_user}:"{mysql_password}"@{mysql_host}/{mysql_db}'
 db = SQLAlchemy(app)
 
-# Handle MySQL connection errors
-@app.errorhandler(500)
-def internal_server_error(e):
-    return f"Error: Unable to connect to MySQL database: {e}", 500
+
+# Check if the DB connection was successful
+try:
+    db.engine.connect()
+    print("Connection to the database was successful.")
+except Exception as e:
+    print(f"Failed to connect to the database: {str(e)}")
 
 @app.route('/update_server', methods=['POST', 'GET'])
 def webhook():
