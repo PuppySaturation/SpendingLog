@@ -19,7 +19,7 @@ def is_valid_signature(x_hub_signature : str, data, private_key):
 app = Flask(__name__)
 W_SECRET = os.environ['SECRET_KEY']
 
-@app.route('/update_server', methods=['POST'])
+@app.route('/update_server', methods=['POST', 'GET'])
 def webhook():
     if request.method == 'POST':
 
