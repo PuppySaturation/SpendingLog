@@ -32,7 +32,7 @@ mysql_user = os.environ['MYSQL_USER']
 mysql_password = os.environ['MYSQL_PASSWORD']
 mysql_db = os.environ['MYSQL_DB']
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{mysql_user}:"{mysql_password}"@{mysql_host}/{mysql_db}'
 db = SQLAlchemy(app)
 
 # Handle MySQL connection errors
