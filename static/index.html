@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content=""width=device-width, initial-scale="1.0">
-        <title>Enter Expenses</title>
-        <link rel="stylesheet" type="text/css" href="static/styles.css">
-    </head>
-    <body>
-        <h2>Enter Expenses</h2>
-        <form id="'expenseForm" action=""/submit_expense" method="post">
-            <div class="form-group">
-                <label for="item_name">Item Name:</label>
-                <input type="text" id="item_name" name="item_name" required>
-            </div>
-            <div class="form-group">
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" min="0" step="0.01" required>
-            </div>
-            <div class="form-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
-            </div>
-            <div class="form-group">
-                <label for="labels">Labels (coma separated):</label>
-                <input type="text" id="labels" name="labels" placeholder="e.g., food, clothing, electronics" required>
-            </div>
-            <input type="submit" value="Submit">
-        </form>
-        
-        <script>
-            document.getElementById('date').valueAsDate = new Date();
-        </script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Expenses</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <h2>Enter Expenses</h2>
+    <form id="expenseForm" action="/submit_expense" method="post">
+        <table id="expenseTable">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Labels (comma-separated)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="item_name[]" required></td>
+                    <td><input type="number" name="price[]" min="0" step="0.01" required></td>
+                    <td><input type="date" name="date[]" required></td>
+                    <td><input type="text" name="labels[]" placeholder="e.g., food, clothing, electronics" required></td>
+                    <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addRow()">Add Expense</button>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function addRow() {
+            var table = document.getElementById('expenseTable').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+            var cells = [];
+            for (var i = 0; i < 5; i++) {
+                cells.push(newRow.insertCell(i));
+            }
+            cells[0].innerHTML = '<input type="text" name="item_name[]" required>';
+            cells[1].innerHTML = '<input type="number" name="price[]" min="0" step="0.01" required>';
+            cells[2].innerHTML = '<input type="date" name="date[]" required>';
+            cells[3].innerHTML = '<input type="text" name="labels[]" placeholder="e.g., food, clothing, electronics" required>';
+            cells[4].innerHTML = '<button type="button" onclick="removeRow(this)">Remove</button>';
+        }
+
+        function removeRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</body>
 </html>
