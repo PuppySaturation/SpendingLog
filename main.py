@@ -8,7 +8,7 @@ import os
 import git
 from flask import Flask, abort, request, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from data_models import Expense, Label, ExpenseLabel
+from data_models import Expense, Label, ExpenseLabel, Base
 
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
@@ -33,8 +33,8 @@ mysql_password = os.environ['MYSQL_PASSWORD']
 mysql_db = os.environ['MYSQL_DB']
 
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle' : 280}
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{mysql_user}:"{mysql_password}"@{mysql_host}/{mysql_db}'
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}'
+db = SQLAlchemy(app, model_class=Base)
 
 
 # Check if the DB connection was successful
