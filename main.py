@@ -6,7 +6,7 @@ import hashlib
 import os
 
 import git
-from flask import Flask, abort, request, send_from_directory
+from flask import Flask, abort, request, send_from_directory, jsonify
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
     # x_hub_signature and data are from the webhook payload
