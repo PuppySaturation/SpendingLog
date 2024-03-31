@@ -6,7 +6,7 @@ import hashlib
 import os
 
 import git
-from flask import Flask, abort, request
+from flask import Flask, abort, request, send_from_directory
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
     # x_hub_signature and data are from the webhook payload
@@ -39,6 +39,7 @@ def webhook():
         return 'Wrong event type', 400
 
 @app.route('/')
-def hello_world():
-    return 'APP deployment !!!'
+def index():
+    return send_from_directory('static', 'index.html')
+
 
