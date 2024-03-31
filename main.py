@@ -106,3 +106,9 @@ def login():
             return redirect('/')
 
     return render_template('login.html')
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()  # Clear the session
+    return redirect('/login')  # Redirect to the login page
