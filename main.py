@@ -8,7 +8,7 @@ import os
 import git
 from flask import Flask, abort, request, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from models import Expense, Label, ExpenseLabel
+from data_models import Expense, Label, ExpenseLabel
 
 
 def is_valid_signature(x_hub_signature : str, data, private_key):
