@@ -9,7 +9,7 @@
 <body>
     <h2>Currently Used Labels</h2>
     <p>
-        {% for label in labels %}{{ label.name }},{% endfor %}
+        {% for label in labels %}{{ label.name }}{% if not loop.last %}, {% endif %}{% endfor %}
     </p>
     <h2>Enter Expenses</h2>
     <form id="expenseForm" action="/submit_expense" method="post">
