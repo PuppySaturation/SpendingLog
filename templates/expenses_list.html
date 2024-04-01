@@ -8,7 +8,7 @@
 </head>
 <body>
     <h2>Filter Expenses by Date</h2>
-    <form action="/filter_expenses" method="post">
+    <form action="/expenses_list" method="post">
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date" required>
         <label for="end_date">End Date:</label>
@@ -30,12 +30,7 @@
         {% endfor %}
     </ul>
 
-    <h2>Edit Labels</h2>
-    <form action="/add_label" method="post">
-        <label for="label_name">Label Name:</label>
-        <input type="text" id="label_name" name="label_name" required>
-        <button type="submit">Add Label</button>
-    </form>
+    <h2>Labels</h2>
     <ul>
         {% for label in labels %}
             <li>{{ label.name }}</li>
