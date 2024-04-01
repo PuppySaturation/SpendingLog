@@ -140,6 +140,7 @@ def update_labels():
     labels = request.form['labels']
     expense = Expense.query.get(expense_id)
     update_labels_in_database(expense, labels)
+    db.session.commit()
     return redirect('/expenses_list')
 
 
