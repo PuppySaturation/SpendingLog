@@ -67,7 +67,7 @@ def webhook():
 def index():
     if not session.get('logged_in'):
         return redirect('/login')
-    labels = Label.query.all()
+    labels = get_all_labels()
     return render_template('index.html', labels=labels)
 
 @app.route('/submit_expense', methods=['POST'])
@@ -81,6 +81,7 @@ def submit_expense():
     # Insert expenses into the database
     for item_name, price, date, label in zip(item_names, prices, dates, labels):
         expense = Expense(item_name=item_name, price=price, date=date)
+        update_labels_in_database(expense, label)
         labels_list = [lbl.strip() for lbl in label.split(',')]
         for lbl in labels_list:
             existing_label = Label.query.filter_by(name=lbl).first()
@@ -95,6 +96,51 @@ def submit_expense():
         db.session.commit()
 
     return jsonify({'message': 'Expenses submitted successfully'})
+
+def get_expenses_between_dates(start_date, end_date):
+    start_date = datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d')
+    expenses = Expense.query.filter(Expense.date >= start_date, Expense.date <= end_date).all()
+    return expenses
+
+def get_all_labels():
+    return Label.query.all()
+
+def update_labels_in_database(expense, label_str):
+    expense.labels.clear()
+    labels_list = [lbl.strip() for lbl in label_str.split(',')]
+    for lbl in labels_list:
+        existing_label = Label.query.filter_by(name=lbl).first()
+        if existing_label is None:
+            new_label = Label(name=lbl)
+            db.session.add(new_label)
+            db.session.commit()
+            expense.labels.append(new_label)
+        else:
+            expense.labels.append(existing_label)
+
+
+@app.route('/expenses_list', methods=['GET', 'POST'])
+def expenses_list():
+    if request.method == 'POST':
+        # Handle filtering expenses by dates
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        expenses = get_expenses_between_dates(start_date, end_date)  
+    else:
+        # Render the page without filtering by default
+        expenses = []
+    labels = get_all_labels()  
+    return render_template('expenses_list.html', expenses=expenses, labels=labels)
+
+@app.route('/update_labels', methods=['POST'])
+def update_labels():
+    expense_id = request.form['expense_id']
+    labels = request.form['labels']
+    expense = Expense.query.get(expense_id)
+    update_labels_in_database(expense, labels)
+    return redirect('/expenses_list')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
