@@ -34,7 +34,7 @@
                 <td>{{ expense.price }}</td>
                 <td>{{ expense.date }}</td>
                 <td>
-                    <form action="/update_labels" method="post">
+                    <form action="/update_labels" method="post" id="update_labels_form_{{ expense.id }}">
                         <input type="hidden" name="expense_id" value="{{ expense.id }}">
                         <input type="text" name="labels" value="{% for label in expense.labels %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}" required>
                     </form>
