@@ -23,7 +23,7 @@
                 {{ expense.item_name }} - {{ expense.price }} - {{ expense.date }}
                 <form action="/update_labels" method="post">
                     <input type="hidden" name="expense_id" value="{{ expense.id }}">
-                    <input type="text" name="labels" value="{{ expense.labels }}" placeholder="Labels (comma-separated)">
+                    <input type="text" name="labels" value="{% for label in expense.labels %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}" placeholder="Labels (comma-separated)">
                     <button type="submit">Update Labels</button>
                 </form>
             </li>
