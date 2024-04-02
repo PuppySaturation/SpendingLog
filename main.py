@@ -1,6 +1,4 @@
 
-# A very simple Flask Hello World app for you to get started with...
-
 import hmac
 import hashlib
 import os
@@ -73,6 +71,8 @@ def index():
 
 @app.route('/submit_expense', methods=['POST'])
 def submit_expense():
+    if not session.get('logged_in'):
+        return redirect('/login')
     # Get the data from the form
     item_names = request.form.getlist('item_name[]')
     prices = request.form.getlist('price[]')
@@ -123,6 +123,8 @@ def update_labels_in_database(expense, label_str):
 
 @app.route('/expenses_list', methods=['GET', 'POST'])
 def expenses_list():
+    if not session.get('logged_in'):
+        return redirect('/login')
     if request.method == 'POST':
         # Handle filtering expenses by dates
         start_date = request.form['start_date']
@@ -136,6 +138,8 @@ def expenses_list():
 
 @app.route('/update_labels', methods=['POST'])
 def update_labels():
+    if not session.get('logged_in'):
+        return redirect('/login')
     expense_id = request.form['expense_id']
     labels = request.form['labels']
     expense = Expense.query.get(expense_id)
@@ -158,5 +162,7 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    if not session.get('logged_in'):
+        return redirect('/login')
     session.clear()  # Clear the session
     return redirect('/login')  # Redirect to the login page
