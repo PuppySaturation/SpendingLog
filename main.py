@@ -2,7 +2,7 @@
 import hmac
 import hashlib
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import git
 from flask import Flask, abort, request, render_template, jsonify, session, redirect
@@ -67,7 +67,10 @@ def index():
     if not session.get('logged_in'):
         return redirect('/login')
     labels = get_all_labels()
-    return render_template('index.html', labels=labels)
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=1)
+    expenses = get_expenses_between_dates(start_date.isoformat(), end_date.isoformat())
+    return render_template('index.html', labels=labels, expenses=expenses)
 
 @app.route('/submit_expense', methods=['POST'])
 def submit_expense():
