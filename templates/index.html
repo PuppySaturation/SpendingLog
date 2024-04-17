@@ -49,9 +49,6 @@
                 <td>{{ expense.price }}</td>
                 <td>{{ expense.date }}</td>
                 <td></td>{% for label in expense.labels %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}</td>
-                <td>
-                    <button form="update_labels_form_{{ expense.id }}" type="submit">Update Labels</button>
-                </td>
             </tr>
             {% endfor %}
         </tbody>
