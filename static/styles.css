@@ -10,6 +10,14 @@ form {
     margin: 0 auto;
 }
 
+td {
+    padding-left: 5pt;
+    padding-top: 0pt;
+    padding-right: 5pt;
+    padding-bottom: 5pt;
+    margin-bottom: 15pt;
+}
+
 .form-group {
     margin-bottom: 20px;
 }
