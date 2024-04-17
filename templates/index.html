@@ -32,7 +32,7 @@
      <form action="/logout" method="post">
         <button type="submit">Logout</button>
     </form>
-    <h2>Expenses last 24h</h2>
+    <h2>Recent Expenses</h2>
     <table>
         <thead>
             <tr>
@@ -48,7 +48,7 @@
                 <td>{{ expense.item_name }}</td>
                 <td>{{ expense.price }}</td>
                 <td>{{ expense.date }}</td>
-                <td></td>{% for label in expense.labels %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                <td>{% for label in expense.labels %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}</td>
             </tr>
             {% endfor %}
         </tbody>
