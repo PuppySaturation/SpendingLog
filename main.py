@@ -69,7 +69,7 @@ def index():
     labels = get_all_labels()
     end_date = datetime.now()
     start_date = end_date - timedelta(days=1)
-    expenses = get_expenses_between_dates(start_date.isoformat(), end_date.isoformat())
+    expenses = get_expenses_between_dates(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
     return render_template('index.html', labels=labels, expenses=expenses)
 
 @app.route('/submit_expense', methods=['POST'])
